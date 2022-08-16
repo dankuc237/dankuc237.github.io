@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<link rel="stylesheet" href="/_assets/main.css" />
+
+    <title>Skanowanie maszyny - Notatki</title>
+  <link rel="stylesheet" href="/_markdown_plugin_assets/highlight.js/atom-one-light.css" /></head>
+  <body>
+    <div class="main">
+      <nav class="navigation">
+        <a href="/">Notatki</a>
+      </nav>
+      <article>
+        <header>
+          <h1 class="article-title">Skanowanie maszyny</h1>
+          <div class="article-info">
+            <div>
+              <span
+                >Created At：<time datetime="1653651840000"
+                  >2022-05-27 07:44</time
+                ></span
+              >
+              <span
+                >Updated At：<time datetime="1660120350361"
+                  >2022-08-10 04:32</time
+                ></span
+              >
+            </div>
+            
+          </div>
+        </header>
+        <div class="article-content markdown-body"><h1 id="amass">amass</h1>
+<p><a title="https://github.com/OWASP/Amass/blob/master/doc/user_guide.md" href="https://github.com/OWASP/Amass/blob/master/doc/user_guide.md">https://github.com/OWASP/Amass/blob/master/doc/user_guide.md</a></p>
+<h2 id="enum">enum</h2>
+<p>for subdomain enumeration. Perform DNS enumeration and network mapping of systems exposed to the Internet
+przeszukuje opensource bazy danych w poszukwaniu domen, czy domeny są osiągalne, pokazuje tylko adresy które są osiągalne,<br />
+Typical parameters for DNS enumeration:</p>
+<div><pre class="hljs"><code>amass <span class="hljs-keyword">enum</span> -v -src -ip -brute -<span class="hljs-built_in">min</span>-for-<span class="hljs-keyword">recursive</span> <span class="hljs-number">2</span> -d example.com</code></pre></div>
+<div><pre class="hljs"><code>amass <span class="hljs-keyword">enum</span> -d *domain* -src -ip -dir directory_to_save</code></pre></div>
+<ul>
+<li>-src -pokaż skąd są dane</li>
+<li>-ip -chcę widzieć adresy ip znalezionego każdego celu</li>
+<li>-brute -bruteforce nazwy subdomen, DNS bruteforce wordlist : <em>/usr/share/amass/wordlists</em></li>
+<li>-dir -dir do którego zapisujemy wyniki</li>
+</ul>
+<h2 id="intel">intel</h2>
+<p>Collect open source intelligence for investigation of the target organization</p>
+<div><pre class="hljs"><code>amas <span class="hljs-built_in">int</span>el -asn numer_ASN_z_enum</code></pre></div>
+<ul>
+<li>-asn -An Autonomous System (AS) is a group of one or more IP prefixes (lists of IP addresses accessible on a network) run by one or more network operators that maintain a single, clearly-defined routing policy. Network operators need Autonomous System Numbers (ASNs) to control routing within their networks and to exchange routing information with other Internet Service Providers (ISPs).</li>
+</ul>
+<h3 id="reverse-whois-lookup">reverse whois lookup</h3>
+<p>amass intel -whois -d globomantics.com -dir</p>
+<h2 id="viz">viz</h2>
+<p>Generate visualizations of enumerations for exploratory analysis</p>
+<h2 id="track">track</h2>
+<p>Compare results of enumerations against common target organizations</p>
+<h2 id="db">db</h2>
+<p>Manage the graph databases storing the enumeration results</p>
+<h1></h1>
+<h1 id="2-początkowe-skanowanie">2. Początkowe skanowanie</h1>
+<div><pre class="hljs"><code><span class="hljs-attribute">nmap</span> -p <span class="hljs-number">21</span>,<span class="hljs-number">22</span>,<span class="hljs-number">80</span>,<span class="hljs-number">443</span> <span class="hljs-number">10.10.56.0</span>/<span class="hljs-number">24</span>
+<span class="hljs-attribute">nmap</span> <span class="hljs-number">192.168.18.10</span>-<span class="hljs-number">25</span>
+<span class="hljs-attribute">nmap</span> <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.*.<span class="hljs-number">10</span>
+<span class="hljs-attribute">nmap</span> localhost
+<span class="hljs-attribute">nmap</span> -iL targets.txt</code></pre></div>
+<p>znajdź wszystkie hosty z podanego zakresu mające otwarte porty p, wypróbuje każdy adres z puli, * zastąpi liczbami 0-255</p>
+<div><pre class="hljs"><code><span class="hljs-comment">* -iL -read target specifications from file</span>
+<span class="hljs-comment">* -F - top 100 ports</span>
+<span class="hljs-comment">* -T -speed of scan (0-5)</span></code></pre></div>
+<p><strong>1.  host discovery</strong> w sieci</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">nmap</span> -<span class="hljs-keyword">sn</span> IP
+<span class="hljs-keyword">nmap</span> -<span class="hljs-keyword">sn</span> <span class="hljs-number">192.168</span>.<span class="hljs-number">0.1</span>-<span class="hljs-number">254</span> **lub** <span class="hljs-keyword">nmap</span> -<span class="hljs-keyword">sn</span> <span class="hljs-number">192.168</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span></code></pre></div>
+<p><strong>2.  port scan</strong></p>
+<div><pre class="hljs"><code>nmap -p- --<span class="hljs-built_in">min</span>-rate=<span class="hljs-number">1000</span> IP
+nmap -sU -p- --<span class="hljs-built_in">min</span>-rate=<span class="hljs-number">1000</span> IP
+
+<span class="hljs-comment">* -sS domyślnie skan  -niepełny 3 way handshake, stealth("nie zauważalny tak po chuju bo pakiety są puste i podejrzane, zwykły skan mniej się rzuca w oczy")</span>
+<span class="hljs-comment">* -sT -skanowanie z pełnym 3 way handshake</span>
+<span class="hljs-comment">* -sU skan UDP</span>
+<span class="hljs-comment">* -p- -wszystkie porty</span>
+<span class="hljs-comment">* --open: Only show open (or possibly open) ports</span>
+<span class="hljs-comment">* --min-rate=1000 1000 pakietów na s</span>
+<span class="hljs-comment">* --top-ports 20 -20 najczęstrzych portów</span></code></pre></div>
+<p><strong>2. Dalsze skanowanie portów</strong>
+nmap -p {wcześniej znalezione porty} IP -vv -sC -sV</p>
+<ul>
+<li>-vv verbose- więcej “v”, więcej opisu</li>
+<li>-sC - --script=default</li>
+<li>-sV -service version</li>
+<li>-O -OS detection</li>
+<li>-oN/-oX/-oS/-oG/-oA <file class="jop-noMdConv"> -wynik skanowania zapisany w foramtach normal, XML, s|rIpt kIddi3, grepable format, w 3 pierwszych foramtach na raz i nazwa pliku</file></li>
+<li>–script=  <strong>(folder ze skryptami /usr/share/nmap/scripts)</strong>
+<ul>
+<li>vuln</li>
+<li>smb-enum-shares (enumerate smb shares)</li>
+<li>smb-vuln-ms-010 - czy serwer jest wrażliwy na podatność Eternal Blue</li>
+<li>ftp-anon (FTP anonymous login)</li>
+<li>http-title</li>
+</ul>
+</li>
+<li>–open</li>
+<li>-A -agresive</li>
+</ul>
+<h1 id="4-gobuster">4. gobuster</h1>
+<p>ma trzy dostępne tryby: „dns”, „dir” i „vhost”. Służą one odpowiednio do brute force zgadywania subdomen, katalogów i plików oraz wirtualnych hostów.
+<a title="https://github.com/OJ/gobuster" href="https://github.com/OJ/gobuster">https://github.com/OJ/gobuster</a></p>
+<h2 id="globalne-flagi">globalne flagi</h2>
+<ul>
+<li>-t, --threads int			  -Number of concurrent threads (default 10)</li>
+<li>-w, --wordlist string   -Path to the wordlist</li>
+<li>–no-error          Don’t display errors</li>
+<li>-z, --no-progress		   -Don’t display progress</li>
+<li>-v -verbose</li>
+<li>-q, --quiet					-Don’t print the banner and other noise (errors)</li>
+</ul>
+<h2 id="1-dir-mode">1. DIR mode</h2>
+<div><pre class="hljs"><code>gobuster dir -u <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span> -w <span class="hljs-tag">&lt;<span class="hljs-name">wordlist_file.txt</span>&gt;</span> -x <span class="hljs-tag">&lt;<span class="hljs-name">file_extensions</span>&gt;</span></code></pre></div>
+<ul>
+<li>-u -target url, np artcorp.htb</li>
+<li>-w -wordlist:
+<ol>
+<li>/usr/share/dirbuster/…</li>
+<li>/usr/share/seclist/…</li>
+</ol>
+</li>
+<li>-x -include file type</li>
+</ul>
+<h2 id="2-vhost">2. VHOST</h2>
+<div><pre class="hljs"><code>gobuster vhost -w <span class="hljs-tag">&lt;<span class="hljs-name">wordlist.txt</span>&gt;</span> -u <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span> -o <span class="hljs-tag">&lt;<span class="hljs-name">output_file.txt</span>&gt;</span></code></pre></div>
+<p>wirtualne hosty na aserwerze http (na jednym hostingu, serwerze można wyświetlać kilka stron)</p>
+<h2 id="3-dns">3. DNS</h2>
+<hr />
+<p>jakieś skrypty, nie wiem o co chodzi ale nie kasuję</p>
+<div><pre class="hljs"><code><span class="hljs-keyword">for</span> el <span class="hljs-keyword">in</span> *;<span class="hljs-keyword">do</span> <span class="hljs-built_in">echo</span> <span class="hljs-variable">$el</span>;gobuster dns -d artcorp.htb -t 1000 -w <span class="hljs-variable">$el</span> -q ; <span class="hljs-keyword">done</span></code></pre></div>
+<div><pre class="hljs"><code><span class="hljs-meta">#!/bin/bash</span>
+lista=$(find . -<span class="hljs-built_in">type</span> f )
+<span class="hljs-keyword">for</span> el <span class="hljs-keyword">in</span> <span class="hljs-variable">$lista</span>
+<span class="hljs-keyword">do</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">"DNS - file: <span class="hljs-variable">$el</span>"</span>
+        gobuster dns -d artcorp.htb -t 1000 -w <span class="hljs-variable">$el</span> -q &gt;&gt; daniel.txt
+<span class="hljs-keyword">done</span>
+</code></pre></div>
+<div><pre class="hljs"><code>gobuster dir -u http:<span class="hljs-regexp">//</span>artcorp.htb -w <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/dirbuster/</span>wordlists/directory-list-<span class="hljs-number">2.3</span>-medium.txt -t <span class="hljs-number">50</span> -x .txt,.html,.php --no-error</code></pre></div>
+</div>
+      </article>
+    </div>
+  </body>
+</html>
