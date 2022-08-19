@@ -24,8 +24,8 @@
                 ></span
               >
               <span
-                >Updated At：<time datetime="1660120350361"
-                  >2022-08-10 04:32</time
+                >Updated At：<time datetime="1660826978958"
+                  >2022-08-18 08:49</time
                 ></span
               >
             </div>
@@ -85,54 +85,55 @@ nmap -sU -p- --<span class="hljs-built_in">min</span>-rate=<span class="hljs-num
 <span class="hljs-comment">* --open: Only show open (or possibly open) ports</span>
 <span class="hljs-comment">* --min-rate=1000 1000 pakietów na s</span>
 <span class="hljs-comment">* --top-ports 20 -20 najczęstrzych portów</span></code></pre></div>
-<p><strong>2. Dalsze skanowanie portów</strong>
-nmap -p {wcześniej znalezione porty} IP -vv -sC -sV</p>
-<ul>
-<li>-vv verbose- więcej “v”, więcej opisu</li>
-<li>-sC - --script=default</li>
-<li>-sV -service version</li>
-<li>-O -OS detection</li>
-<li>-oN/-oX/-oS/-oG/-oA <file class="jop-noMdConv"> -wynik skanowania zapisany w foramtach normal, XML, s|rIpt kIddi3, grepable format, w 3 pierwszych foramtach na raz i nazwa pliku</file></li>
-<li>–script=  <strong>(folder ze skryptami /usr/share/nmap/scripts)</strong>
-<ul>
-<li>vuln</li>
-<li>smb-enum-shares (enumerate smb shares)</li>
-<li>smb-vuln-ms-010 - czy serwer jest wrażliwy na podatność Eternal Blue</li>
-<li>ftp-anon (FTP anonymous login)</li>
-<li>http-title</li>
-</ul>
-</li>
-<li>–open</li>
-<li>-A -agresive</li>
-</ul>
+<p><strong>2. Dalsze skanowanie portów</strong></p>
+<div><pre class="hljs"><code>nmap -p {wcześniej znalezione porty} IP -vv -sC -sV
+<span class="hljs-bullet">*</span> -vv verbose- więcej "v", więcej opisu
+<span class="hljs-bullet">*</span> -sC - --script=default
+<span class="hljs-bullet">*</span> -sV -service version
+<span class="hljs-bullet">*</span> -O -OS detection
+<span class="hljs-bullet">*</span> -oN/-oX/-oS/-oG/-oA <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">file</span>&gt;</span></span> -wynik skanowania zapisany w foramtach normal, XML, s|rIpt kIddi3, grepable format, w 3 pierwszych foramtach na raz i nazwa pliku
+<span class="hljs-bullet">*</span> --script=  <span class="hljs-strong">**(folder ze skryptami /usr/share/nmap/scripts)**</span>
+<span class="hljs-bullet">    -</span> vuln
+<span class="hljs-bullet">    -</span> smb-enum-shares (enumerate smb shares)
+<span class="hljs-bullet">    -</span> smb-vuln-ms-010 - czy serwer jest wrażliwy na podatność Eternal Blue 
+<span class="hljs-bullet">    -</span> ftp-anon (FTP anonymous login)
+<span class="hljs-bullet">    -</span> http-title
+<span class="hljs-bullet">*</span> --open
+<span class="hljs-bullet">*</span> -A -agresive</code></pre></div>
 <h1 id="4-gobuster">4. gobuster</h1>
 <p>ma trzy dostępne tryby: „dns”, „dir” i „vhost”. Służą one odpowiednio do brute force zgadywania subdomen, katalogów i plików oraz wirtualnych hostów.
+<strong>A website behind cloudflare can mess up a scan like this!</strong>
+<a title="https://erev0s.com/blog/gobuster-directory-dns-and-virtual-hosts-bruteforcing/" href="https://erev0s.com/blog/gobuster-directory-dns-and-virtual-hosts-bruteforcing/">https://erev0s.com/blog/gobuster-directory-dns-and-virtual-hosts-bruteforcing/</a>
 <a title="https://github.com/OJ/gobuster" href="https://github.com/OJ/gobuster">https://github.com/OJ/gobuster</a></p>
 <h2 id="globalne-flagi">globalne flagi</h2>
-<ul>
-<li>-t, --threads int			  -Number of concurrent threads (default 10)</li>
-<li>-w, --wordlist string   -Path to the wordlist</li>
-<li>–no-error          Don’t display errors</li>
-<li>-z, --no-progress		   -Don’t display progress</li>
-<li>-v -verbose</li>
-<li>-q, --quiet					-Don’t print the banner and other noise (errors)</li>
-</ul>
+<div><pre class="hljs"><code># -t, --threads int -Number of concurrent threads (default <span class="hljs-number">10</span>)
+# -w, --wordlist <span class="hljs-built_in">string</span> -Path to the wordlist
+# --no-<span class="hljs-built_in">error</span> Don't <span class="hljs-built_in">display</span> <span class="hljs-built_in">errors</span>
+# -z, --no-progress -Don't <span class="hljs-built_in">display</span> progress
+# -v -<span class="hljs-built_in">verbose</span>
+# -q, --quiet -Don't <span class="hljs-built_in">print</span> the banner <span class="hljs-keyword">and</span> other noise (<span class="hljs-built_in">errors</span>)</code></pre></div>
 <h2 id="1-dir-mode">1. DIR mode</h2>
-<div><pre class="hljs"><code>gobuster dir -u <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span> -w <span class="hljs-tag">&lt;<span class="hljs-name">wordlist_file.txt</span>&gt;</span> -x <span class="hljs-tag">&lt;<span class="hljs-name">file_extensions</span>&gt;</span></code></pre></div>
-<ul>
-<li>-u -target url, np artcorp.htb</li>
-<li>-w -wordlist:
-<ol>
-<li>/usr/share/dirbuster/…</li>
-<li>/usr/share/seclist/…</li>
-</ol>
-</li>
-<li>-x -include file type</li>
-</ul>
+<div><pre class="hljs"><code>gobuster dir -u &lt;url&gt; -w &lt;wordlist_file.txt&gt; -x &lt;file_extensions&gt;
+# -u -target url, np artcorp.htb
+# -w -wordlist: <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/dirbuster/</span>... oraz <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/seclist/</span>...
+# -x -<span class="hljs-keyword">include</span> <span class="hljs-keyword">file</span> type, search specific <span class="hljs-keyword">file</span> extensions, np.: php,pdf,html,txt,bak
+# -e expand mode, viev full urls
+# -r follow redirections</code></pre></div>
+<div><pre class="hljs"><code><span class="hljs-comment"># find images</span>
+gobuster dir -u mytarget.com -w path<span class="hljs-regexp">/to/my</span><span class="hljs-regexp">/awesome/</span>wordlist.txt -e -t <span class="hljs-number">100</span> -x jpg,jpeg,png,gif,ico
+<span class="hljs-comment"># web interesting files</span>
+gobuster dir -u mytarget.com -w path<span class="hljs-regexp">/to/my</span><span class="hljs-regexp">/awesome/</span>wordlist.txt -e -t <span class="hljs-number">100</span> -x php,txt,html,htm</code></pre></div>
 <h2 id="2-vhost">2. VHOST</h2>
+<p>In vhosts mode the tool is checking if the subdomain exists by visiting the formed url and verifying the IP address.</p>
 <div><pre class="hljs"><code>gobuster vhost -w <span class="hljs-tag">&lt;<span class="hljs-name">wordlist.txt</span>&gt;</span> -u <span class="hljs-tag">&lt;<span class="hljs-name">url</span>&gt;</span> -o <span class="hljs-tag">&lt;<span class="hljs-name">output_file.txt</span>&gt;</span></code></pre></div>
 <p>wirtualne hosty na aserwerze http (na jednym hostingu, serwerze można wyświetlać kilka stron)</p>
 <h2 id="3-dns">3. DNS</h2>
+<p>enumerate subdomains on domain
+tool attempts to DNS resolve the subdomains and based on that we are given the result.</p>
+<div><pre class="hljs"><code><span class="hljs-attribute">gobuster</span> dns -r <span class="hljs-number">1.1.1.1</span> -d pluralsight.com -w &lt;wordlist_subdomains&gt; 
+<span class="hljs-comment"># -r resolver</span>
+<span class="hljs-comment"># -d domain name</span>
+<span class="hljs-comment"># -w wordlist of subdomains</span></code></pre></div>
 <hr />
 <p>jakieś skrypty, nie wiem o co chodzi ale nie kasuję</p>
 <div><pre class="hljs"><code><span class="hljs-keyword">for</span> el <span class="hljs-keyword">in</span> *;<span class="hljs-keyword">do</span> <span class="hljs-built_in">echo</span> <span class="hljs-variable">$el</span>;gobuster dns -d artcorp.htb -t 1000 -w <span class="hljs-variable">$el</span> -q ; <span class="hljs-keyword">done</span></code></pre></div>

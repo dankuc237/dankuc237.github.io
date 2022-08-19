@@ -24,8 +24,8 @@
                 ></span
               >
               <span
-                >Updated At：<time datetime="1660638618428"
-                  >2022-08-16 04:30</time
+                >Updated At：<time datetime="1660901512300"
+                  >2022-08-19 05:31</time
                 ></span
               >
             </div>
@@ -86,7 +86,7 @@ zbiór wielu typów list wykorzystywanych podczas oceny bezpieczeństwa, zgromad
 <div><pre class="hljs"><code>curl http://link/ --silent | <span class="hljs-type">grep</span> -Eo <span class="hljs-string">"href=\"[^\"]*\""</span> | <span class="hljs-type">sort</span> | <span class="hljs-type">uniq</span>
 curl --silent http://link | <span class="hljs-type">grep</span> -Eo <span class="hljs-string">"[a-zA-Z]*=\"[^\"]*\""</span> | <span class="hljs-type">sort</span> | <span class="hljs-type">uniq</span></code></pre></div>
 <h1 id="python">PYTHON</h1>
-<div><pre class="hljs"><code><span class="hljs-built_in">os</span>.<span class="hljs-built_in">path</span>.join(<span class="hljs-built_in">os</span>.getcwd(), <span class="hljs-string">"public"</span>, <span class="hljs-string">"uploads"</span>, el)</code></pre></div>
+<div><pre class="hljs"><code>os.path.join(os.getcwd(), <span class="hljs-string">"public"</span>, <span class="hljs-string">"uploads"</span>, el)</code></pre></div>
 <p>If a component (el) is an absolute path (np.: (//?) /daniel), all previous components are thrown away and joining continues from the absolute path component.</p>
 <h1 id="nikto">nikto</h1>
 <p>Scan web server for known vulnerabilities</p>
@@ -130,8 +130,11 @@ używając sudo należy pamięctać o -E aby przekazywało zmienne do dalszych p
 <div><pre class="hljs"><code><span class="hljs-built_in">find</span> . -<span class="hljs-built_in">name</span> <span class="hljs-string">"*.zip"</span> -<span class="hljs-built_in">exec</span> mv <span class="hljs-string">"{}"</span> ./zipfiles \;</code></pre></div>
 <h1 id="znajdź-duplikaty-plików-używając-md5">znajdź duplikaty plików używając md5</h1>
 <div><pre class="hljs"><code><span class="hljs-built_in">find</span> . -<span class="hljs-built_in">type</span> f -print0 | xargs <span class="hljs-number">-0</span> md5sum | <span class="hljs-built_in">sort</span> | uniq -w32 <span class="hljs-comment">--all-repeated=separate</span></code></pre></div>
-<h1 id="zamień-spacje-z-nazw-plików-na-_-nie-rekurencyjne-pliki-i-foldery">zamień spacje z nazw plików na _ (nie rekurencyjne, pliki i foldery)</h1>
-<div><pre class="hljs"><code><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> *\ *; <span class="hljs-keyword">do</span> mv <span class="hljs-string">"<span class="hljs-variable">$f</span>"</span> <span class="hljs-string">"<span class="hljs-variable">${f// /_}</span>"</span>; <span class="hljs-keyword">done</span></code></pre></div>
+<h1 id="zamień-spacje-z-nazw-plików-na-_-pliki-i-foldery">zamień spacje z nazw plików na _ (pliki i foldery)</h1>
+<div><pre class="hljs"><code>REKURSYWNIE
+<span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> *\ *; <span class="hljs-keyword">do</span> mv <span class="hljs-string">"<span class="hljs-variable">$f</span>"</span> <span class="hljs-string">"<span class="hljs-variable">${f// /_}</span>"</span>; <span class="hljs-keyword">done</span>
+INNE REKURSYWNIE
+find . -<span class="hljs-built_in">type</span> f -name <span class="hljs-string">"* *"</span> -<span class="hljs-built_in">exec</span> bash -c <span class="hljs-string">'mv "$0" "${0// /_}"'</span> {} \; <span class="hljs-comment">#https://linuxconfig.org/remove-white-space-from-file-name-and-rename-it-with-bash-command</span></code></pre></div>
 <p>The ${f// /_} part utilizes bash’s parameter expansion mechanism to replace a pattern within a parameter with supplied string. The relevant syntax is ${parameter/pattern/string}. See: <a title="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html" href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html</a> or <a title="http://wiki.bash-hackers.org/syntax/pe" href="http://wiki.bash-hackers.org/syntax/pe">http://wiki.bash-hackers.org/syntax/pe</a> .</p>
 <h1 id="cała-bezwzględna-ścieżka-do-pliku">cała (bezwzględna) ścieżka do pliku</h1>
 <div><pre class="hljs"><code><span class="hljs-built_in">find</span> <span class="hljs-string">"<span class="hljs-variable">$(pwd)</span>"</span> -type f</code></pre></div>
@@ -145,6 +148,8 @@ używając sudo należy pamięctać o -E aby przekazywało zmienne do dalszych p
 <span class="hljs-comment"># wszystkie pliki w folderze to tylko pdfy</span>
 <span class="hljs-variable">$ </span><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> *;<span class="hljs-keyword">do</span> ocrmypdf --<span class="hljs-keyword">redo</span>-ocr <span class="hljs-variable">$f</span> <span class="hljs-variable">$f</span>;done </code></pre></div>
 <h1 id="pdf">PDF</h1>
+<div><pre class="hljs"><code># jeś<span class="hljs-keyword">li</span> jest błą<span class="hljs-keyword">d</span> <span class="hljs-string">"Unimplemented Feature: Could not merge encrypted files"</span> to należy odszyfrować pliki
+<span class="hljs-keyword">for</span> <span class="hljs-keyword">file</span> <span class="hljs-keyword">in</span> $(find $(<span class="hljs-keyword">pwd</span>) -<span class="hljs-keyword">type</span> f -name *.pdf| <span class="hljs-keyword">sort</span>);<span class="hljs-keyword">do</span> qpdf --decrypt <span class="hljs-string">"$file"</span> --<span class="hljs-keyword">replace</span>-<span class="hljs-keyword">input</span>;done</code></pre></div>
 <p>scalanie pdf</p>
 <div><pre class="hljs"><code>pdfunite pdf1<span class="hljs-selector-class">.pdf</span> pdf2<span class="hljs-selector-class">.pdf</span> ... nazwa_wynikowego_pdf.pdf</code></pre></div>
 <p>scalanie obrazów w pdf</p>
